@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: MIT
 
-# import sys
-# sys.path.insert(0,'..')
+import sys
+
+sys.path.insert(0, "..")
 
 from peterbay_pymenu import MenuCore, MenuItem
 

@@ -1,6 +1,7 @@
-# SPDX-FileCopyrightText: 2021 Melissa LeBlanc-Williams for Adafruit Industries
+# SPDX-FileCopyrightText: 2023 Petr Vavrin <pvavrin@gmail.com>
+# SPDX-FileCopyrightText: Copyright (c) 2023 Petr Vavrin
 #
-# SPDX-License-Identifier: Unlicense
+# SPDX-License-Identifier: MIT
 
 # Read the Docs configuration file
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details

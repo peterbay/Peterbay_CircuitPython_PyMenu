@@ -14,7 +14,6 @@ Universal python library for creating menus for console and GUI applications.
 Implementation Notes
 --------------------
 
-It's universal without any dependencies.
 
 """
 
@@ -25,6 +24,25 @@ __repo__ = "https://github.com/peterbay/Peterbay_CircuitPython_PyMenu.git"
 
 
 class MenuItem:
+    """Menu item class
+
+    :param int uid: Unique item ID (automatically set in menu core)
+    :param str label: Label of menu item
+    :param str hotkey: Hotkey defined for menu item
+    :param object data: Object, string, int, etc. for storing custom data
+    :param bool disabled: Disabled menu item (not selectable)
+
+    :param function enter_cb: Callback function for enter action
+    :param function leave_cb: Callback function for leave action
+    :param function value_cb: Callback function for value action
+    :param function dynamic_cb: Callback function for dynamic action
+
+    :param MenuItem parent: Parent menu item (set in menu core)
+    :param MenuItem prev: Previous menu item (set in menu core)
+    :param MenuItem next: Next menu item (set in menu core)
+    :param MenuItem child: Child menu item (set in menu core)
+    """
+
     parent = None
     prev = None
     next = None
@@ -41,16 +59,33 @@ class MenuItem:
     dynamic_cb = None
 
     def __init__(self, **kwargs):
+        """Create menu item instance"""
         for key, value in kwargs.items():
             setattr(self, key, value)
 
     def drop_reference(self):
+        """Drop menu item reference"""
         self.prev = None
         self.next = None
         self.child = None
 
 
 class MenuCore:
+    """Menu core class
+
+    :param bool auto_render: Auto render menu after action
+    :param bool show_previous_items: Show previous items in menu
+    :param bool circular: Enable circular navigation
+    :param int rows_limit: Limit of rows in menu
+
+    :param function menu_exit: Callback function for menu exit
+    :param function pre_render: Callback function for pre-render
+    :param function post_render: Callback function for post-render
+    :param function render_scroll_up: Callback function for scroll up
+    :param function render_scroll_down: Callback function for scroll down
+    :param function render_title: Callback function for render title
+    :param function render_item: Callback function for render item
+    """
     __item_counter = 1
     __root_item = None
     __main_item = None
@@ -74,17 +109,23 @@ class MenuCore:
     rows_limit = 255
 
     def __init__(self):
+        """Create menu core instance"""
         self.__root_item = MenuItem()
         self.__root_item.uid = 0
 
     def add_item(self, menu_item, parent=None):
-        self.check_item(menu_item)
+        """Add menu item to the menu
+
+        :param MenuItem menu_item: Menu item to add
+        :param MenuItem parent: Parent menu item
+        """
+        self.__check_item(menu_item)
 
         menu_item.uid = self.__item_counter
         self.__item_counter += 1
 
         if parent:
-            self.check_item(parent)
+            self.__check_item(parent)
         else:
             parent = self.__root_item
 
@@ -101,19 +142,24 @@ class MenuCore:
             parent.child = menu_item
 
     def init(self, initial_item):
-        self.check_item(initial_item)
+        """Set initial menu item
+
+        :param MenuItem initial_item: Initial menu item
+        """
+        self.__check_item(initial_item)
         self.__main_item = initial_item
         self.__active_item = initial_item
 
-    def check_item(self, item):
+    def __check_item(self, item):
         if not isinstance(item, MenuItem):
             raise ValueError("WRONG_MENU_ITEM_INSTANCE")
 
     def reset(self):
-        self.check_item(self.__active_item)
+        """Reset menu to the initial menu item"""
+        self.__check_item(self.__active_item)
         self.__active_item = self.__main_item
 
-    def clear_childs(self, child_item):
+    def __clear_childs(self, child_item):
         while True:
             next_item = child_item.next
             child_item.drop_reference()
@@ -123,8 +169,12 @@ class MenuCore:
                 break
 
     def action(self, key):
+        """Perform menu action
+
+        :param int key: Action key
+        """
         active_item = self.__active_item
-        self.check_item(active_item)
+        self.__check_item(active_item)
 
         if key == self.ACTION_PREV:
             if active_item.prev:
@@ -155,7 +205,7 @@ class MenuCore:
         elif key == self.ACTION_BACK:
             parent = active_item.parent
             if callable(parent.dynamic_cb):
-                self.clear_childs(parent.child)
+                self.__clear_childs(parent.child)
                 parent.child = None
 
             if callable(parent.leave_cb):
@@ -172,7 +222,11 @@ class MenuCore:
             self.render()
 
     def action_hotkey(self, hotkey):
-        self.check_item(self.__active_item)
+        """Perform menu action by hotkey
+
+        :param str hotkey: Hotkey
+        """
+        self.__check_item(self.__active_item)
         item = self.__active_item
         while item.prev:
             item = item.prev
@@ -189,7 +243,11 @@ class MenuCore:
             item = item.next
 
     def set_active(self, item, enter=False):
-        self.check_item(item)
+        """Set active menu item
+        :param MenuItem item: Menu item to set as active
+        :param bool enter: Perform enter action
+        """
+        self.__check_item(item)
         self.__active_item = item
         if enter:
             self.action(self.ACTION_ENTER)
@@ -198,10 +256,11 @@ class MenuCore:
             self.render()
 
     def render(self):
+        """Render menu"""
         if not callable(self.render_item):
             raise RuntimeError("MISSING_RENDER_ITEM_FUNCTION")
 
-        self.check_item(self.__active_item)
+        self.__check_item(self.__active_item)
         parent = self.__active_item.parent
 
         if callable(self.pre_render):
