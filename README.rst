@@ -29,23 +29,79 @@ can be used with buttons, rotary encoder, or other hardware to input
 up and down commands to move the selection index and then enter to execute
 the selected menu item.
 
+Menu Core
+--------------------
+
+The menu is adaptable by setting these properties:
+
+```auto_render```: Auto render menu after each call of action or action_key.
+Default is True.
+
+```show_previous_items```: Show previous items in menu. If true, the menu
+will show the items previous to the active item.
+Default is True.
+
+```circular```: Enable circular navigation. If enabled and first menu item
+is active and user send action ACTION_PREV, the last item is selected.
+If enabled and last menu item is active and user send action ACTION_NEXT,
+the first item is selected. Default is False.
+
+```rows_limit```: Limit of rows showed in menu. Useful for long menus.
+For showing if previous or next items are available, use render_scroll_up_fn 
+and render_scroll_down_fn. Default is 255.
+
 The menu is adaptable by overriding these functions:
 
-```render_title```: Responsible for rendering the title of the menu. See
+```pre_render_fn```: Called at the beginning of the render operation.
+See simpletest example for an implementation that prints side
+boundaries with ASCII characters.
+
+```render_title_fn```: Responsible for rendering the title of the menu. See
 simpletest example for an implementation that prints title with ASCII
 characters.
 
-```render_item```: Responsible for rendering an item within the menu.
+```render_item_fn```: Responsible for rendering an item within the menu.
 and if desired, the selection indicator. See simpletest example
-for an implementation that prints the items with ASCII characters
+for an implementation that prints the items with ASCII characters.
 
-```pre_render```: Called at the beginning of the render operation.
-See simpletest example for an implementation that prints side
-boundaries with ASCII characters
+```render_scroll_up_fn```: Responsible for rendering the symbol for showing
+that previous items are available. Useful for long menus with limited rows.
 
-```post_render```: Called at the end of the render operation.
+```render_scroll_down_fn```: Responsible for rendering the symbol for showing
+that next items are available. Useful for long menus with limited rows.
+
+```post_render_fn```: Called at the end of the render operation.
 See simpletest example for an implementation that prints side
-boundaries with ASCII characters
+boundaries with ASCII characters.
+
+```menu_exit_fn```: Called when menu is in top level and ACTION_BACK is called.
+
+Menu Item
+--------------------
+
+The menu item is adaptable by setting these parameters:
+
+```label```: Label of menu item.
+
+```hotkey```: Hotkey defined for menu item.
+
+```data```: Object, string, int, etc. for storing custom data.
+
+```disabled```: Disabled menu item (not active).
+
+The menu item is adaptable by overriding these functions:
+
+```dynamic_fn```: Function called to dynamically create submenu items.
+Called before enter_fn.
+
+```enter_fn```: Function called when menu item is selected.
+
+```leave_fn```: Function called before parent menu item is selected. When action
+ACTION_BACK is called.
+
+```value_fn```: Function called for obtaining item value. Called before
+render_title_fn.
+
 
 Dependencies
 =============

@@ -67,11 +67,11 @@ def render_menu_item(item, render_index, is_active):
     if item.disabled:
         item_row.append(" (disabled)")
 
-    if item.value_cb:
-        value = item.value_cb(item)
+    if item.value_fn:
+        value = item.value_fn(item)
         item_row.append("val: %s" % str(value))
 
-    if item.child or callable(item.dynamic_cb):
+    if item.child or callable(item.dynamic_fn):
         item_row.append(" ->")
 
     print_menu_line("".join(item_row))
@@ -105,13 +105,13 @@ def print_message(item):
 
 def dynamic_menu(menux, parent):
     menu_a = MenuItem(
-        label="item a", hotkey="1", enter_cb=print_message, data="Message for item a"
+        label="item a", hotkey="1", enter_fn=print_message, data="Message for item a"
     )
     menu_b = MenuItem(
-        label="item b", hotkey="2", enter_cb=print_message, data="Message for item b"
+        label="item b", hotkey="2", enter_fn=print_message, data="Message for item b"
     )
     menu_c = MenuItem(
-        label="item c", hotkey="3", enter_cb=print_message, data="Message for item c"
+        label="item c", hotkey="3", enter_fn=print_message, data="Message for item c"
     )
 
     menux.add_item(menu_a, parent)
@@ -140,11 +140,11 @@ menu = MenuCore()
 menu_i1 = MenuItem(label="Item 1", hotkey="1")
 menu.add_item(menu_i1)
 
-menu_i1_s1 = MenuItem(label="Item 1 - about", hotkey="1", enter_cb=show_about)
+menu_i1_s1 = MenuItem(label="Item 1 - about", hotkey="1", enter_fn=show_about)
 menu.add_item(menu_i1_s1, menu_i1)
 
 menu_i1_s2 = MenuItem(
-    label="Item 1 - get value", hotkey="2", data="temp", value_cb=get_value
+    label="Item 1 - get value", hotkey="2", data="temp", value_fn=get_value
 )
 menu.add_item(menu_i1_s2, menu_i1)
 
@@ -156,30 +156,30 @@ menu.add_item(menu_i1_s3, menu_i1)
 menu_i2 = MenuItem(label="Item 2", hotkey="2")
 menu.add_item(menu_i2)
 
-menu_i2_s1 = MenuItem(label="Item 2 - dynamic", hotkey="1", dynamic_cb=dynamic_menu)
+menu_i2_s1 = MenuItem(label="Item 2 - dynamic", hotkey="1", dynamic_fn=dynamic_menu)
 menu.add_item(menu_i2_s1, menu_i2)
 
 
-menu_i3 = MenuItem(label="Volume", hotkey="3", value_cb=get_volume)
+menu_i3 = MenuItem(label="Volume", hotkey="3", value_fn=get_volume)
 menu.add_item(menu_i3)
 
-menu_i3_s1 = MenuItem(label="Increase volume", hotkey="1", enter_cb=increase_volume)
+menu_i3_s1 = MenuItem(label="Increase volume", hotkey="1", enter_fn=increase_volume)
 menu.add_item(menu_i3_s1, menu_i3)
 
-menu_i3_s2 = MenuItem(label="Decrease volume", hotkey="2", enter_cb=decrease_volume)
+menu_i3_s2 = MenuItem(label="Decrease volume", hotkey="2", enter_fn=decrease_volume)
 menu.add_item(menu_i3_s2, menu_i3)
 
 
-menu_i9 = MenuItem(label="Exit", hotkey="9", enter_cb=exit_menu)
+menu_i9 = MenuItem(label="Exit", hotkey="9", enter_fn=exit_menu)
 menu.add_item(menu_i9)
 
 menu.init(menu_i1)
 
 menu.circular = False
-menu.render_title = render_menu_title
-menu.render_item = render_menu_item
-menu.pre_render = render_pre
-menu.post_render = render_post
+menu.render_title_fn = render_menu_title
+menu.render_item_fn = render_menu_item
+menu.pre_render_fn = render_pre
+menu.post_render_fn = render_post
 
 menu.render()
 
