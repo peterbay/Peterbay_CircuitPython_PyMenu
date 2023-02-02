@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+# pylint: disable=unused-argument, wrong-import-position
 import sys
 
 sys.path.insert(0, "..")
@@ -92,7 +93,7 @@ def show_about(item):
     print("Example - Petr Vavrin (c) 2023")
 
 
-def exit(item):
+def exit_menu(item):
     sys.exit(0)
 
 
@@ -169,7 +170,7 @@ menu_i3_s2 = MenuItem(label="Decrease volume", hotkey="2", enter_cb=decrease_vol
 menu.add_item(menu_i3_s2, menu_i3)
 
 
-menu_i9 = MenuItem(label="Exit", hotkey="9", enter_cb=exit)
+menu_i9 = MenuItem(label="Exit", hotkey="9", enter_cb=exit_menu)
 menu.add_item(menu_i9)
 
 menu.init(menu_i1)
