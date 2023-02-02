@@ -2,4 +2,3 @@
 # SPDX-FileCopyrightText: Copyright (c) 2023 Petr Vavrin
 #
 # SPDX-License-Identifier: MIT
-

@@ -7,7 +7,6 @@ Introduction
     :alt: Documentation Status
 
 
-
 .. image:: https://img.shields.io/discord/327254708534116352.svg
     :target: https://adafru.it/discord
     :alt: Discord
@@ -24,6 +23,29 @@ Introduction
 
 Universal python library for creating menus for console and GUI applications.
 
+The menu supports 2 main methods of navigation: hotkeys and index selection.
+Hotkeys are characters entered by the user via ```input()```. Index selection
+can be used with buttons, rotary encoder, or other hardware to input
+up and down commands to move the selection index and then enter to execute
+the selected menu item.
+
+The menu is adaptable by overriding these functions:
+
+```render_title```: Responsible for rendering the title of the menu. See
+simpletest example for an implementation that prints title with ASCII
+characters.
+
+```render_item```: Responsible for rendering an item within the menu.
+and if desired, the selection indicator. See simpletest example
+for an implementation that prints the items with ASCII characters
+
+```pre_render```: Called at the beginning of the render operation.
+See simpletest example for an implementation that prints side
+boundaries with ASCII characters
+
+```post_render```: Called at the end of the render operation.
+See simpletest example for an implementation that prints side
+boundaries with ASCII characters
 
 Dependencies
 =============
