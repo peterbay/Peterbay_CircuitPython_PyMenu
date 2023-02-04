@@ -104,20 +104,10 @@ def print_message(item):
 
 
 def dynamic_menu(menux, parent):
-    menu_a = MenuItem(
-        label="item a", hotkey="1", enter_fn=print_message, data="Message for item a"
-    )
-    menu_b = MenuItem(
-        label="item b", hotkey="2", enter_fn=print_message, data="Message for item b"
-    )
-    menu_c = MenuItem(
-        label="item c", hotkey="3", enter_fn=print_message, data="Message for item c"
-    )
-
-    menux.add_item(menu_a, parent)
-    menux.add_item(menu_b, parent)
-    menux.add_item(menu_c, parent)
-
+    menu_a = MenuItem(label="item a", enter_fn=print_message, data="Message for item a")
+    menu_b = MenuItem(label="item b", enter_fn=print_message, data="Message for item b")
+    menu_c = MenuItem(label="item c", enter_fn=print_message, data="Message for item c")
+    menux.add_items_set_hotkey(parent, menu_a, menu_b, menu_c)
 
 def get_volume(item):
     return global_data["volume"]
@@ -137,41 +127,26 @@ def decrease_volume(item):
 
 menu = MenuCore()
 
-menu_i1 = MenuItem(label="Item 1", hotkey="1")
-menu.add_item(menu_i1)
+menu_i1 = MenuItem(label="Item 1")
+menu_i2 = MenuItem(label="Item 2")
+menu_i3 = MenuItem(label="Volume", value_fn=get_volume)
+menu_i4 = MenuItem(label="Exit", enter_fn=exit_menu)
 
-menu_i1_s1 = MenuItem(label="Item 1 - about", hotkey="1", enter_fn=show_about)
-menu.add_item(menu_i1_s1, menu_i1)
+menu.add_items_set_hotkey(None, menu_i1, menu_i2, menu_i3, menu_i4)
 
-menu_i1_s2 = MenuItem(
-    label="Item 1 - get value", hotkey="2", data="temp", value_fn=get_value
-)
-menu.add_item(menu_i1_s2, menu_i1)
+menu_i1_s1 = MenuItem(label="Item 1 - about", enter_fn=show_about)
+menu_i1_s2 = MenuItem(label="Item 1 - get value", data="temp", value_fn=get_value)
+menu_i1_s3 = MenuItem(label="Item 1 - disabled", disabled=True)
 
-menu_i1_s3 = MenuItem(label="Item 1 - disabled", hotkey="3")
-menu_i1_s3.disabled = True
-menu.add_item(menu_i1_s3, menu_i1)
+menu.add_items_set_hotkey(menu_i1, menu_i1_s1, menu_i1_s2, menu_i1_s3)
 
-
-menu_i2 = MenuItem(label="Item 2", hotkey="2")
-menu.add_item(menu_i2)
-
-menu_i2_s1 = MenuItem(label="Item 2 - dynamic", hotkey="1", dynamic_fn=dynamic_menu)
-menu.add_item(menu_i2_s1, menu_i2)
-
-
-menu_i3 = MenuItem(label="Volume", hotkey="3", value_fn=get_volume)
-menu.add_item(menu_i3)
+menu_i2_s1 = MenuItem(label="Item 2 - dynamic", dynamic_fn=dynamic_menu)
+menu.add_items_set_hotkey(menu_i2, menu_i2_s1)
 
 menu_i3_s1 = MenuItem(label="Increase volume", hotkey="1", enter_fn=increase_volume)
-menu.add_item(menu_i3_s1, menu_i3)
+menu_i3_s2 = MenuItem(label="Decrease volume", enter_fn=decrease_volume)
 
-menu_i3_s2 = MenuItem(label="Decrease volume", hotkey="2", enter_fn=decrease_volume)
-menu.add_item(menu_i3_s2, menu_i3)
-
-
-menu_i9 = MenuItem(label="Exit", hotkey="9", enter_fn=exit_menu)
-menu.add_item(menu_i9)
+menu.add_items_set_hotkey(menu_i3, menu_i3_s1, menu_i3_s2)
 
 menu.init(menu_i1)
 

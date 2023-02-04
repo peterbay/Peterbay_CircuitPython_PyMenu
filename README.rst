@@ -47,7 +47,7 @@ If enabled and last menu item is active and user send action ACTION_NEXT,
 the first item is selected. Default is False.
 
 ```rows_limit```: Limit of rows showed in menu. Useful for long menus.
-For showing if previous or next items are available, use render_scroll_up_fn 
+For showing if previous or next items are available, use render_scroll_up_fn
 and render_scroll_down_fn. Default is 255.
 
 The menu is adaptable by overriding these functions:

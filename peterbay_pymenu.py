@@ -33,7 +33,7 @@ If enabled and last menu item is active and user send action ACTION_NEXT,
 the first item is selected. Default is False.
 
 ```rows_limit```: Limit of rows showed in menu. Useful for long menus.
-For showing if previous or next items are available, use render_scroll_up_fn 
+For showing if previous or next items are available, use render_scroll_up_fn
 and render_scroll_down_fn. Default is 255.
 
 The menu is adaptable by overriding these functions:
@@ -194,7 +194,7 @@ class MenuCore:
         self.__root_item = MenuItem()
         self.__root_item.uid = 0
 
-    def add_item(self, menu_item, parent=None):
+    def add_item(self, parent, menu_item):
         """Add menu item to the menu
 
         :param MenuItem menu_item: Menu item to add
@@ -221,6 +221,17 @@ class MenuCore:
 
         else:
             parent.child = menu_item
+
+    def add_items(self, parent, *args):
+        for item in args:
+            self.add_item(parent, item)
+
+    def add_items_set_hotkey(self, parent, *args):
+        hotkey = 1
+        for item in args:
+            item.hotkey = str(hotkey)
+            self.add_item(parent, item)
+            hotkey += 1
 
     def init(self, initial_item):
         """Set initial menu item
