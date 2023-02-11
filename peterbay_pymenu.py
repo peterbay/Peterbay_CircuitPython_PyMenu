@@ -319,12 +319,12 @@ class MenuCore:
         :param str hotkey: Hotkey
         """
         self.__check_item(self.__active_item)
-        item = self.__active_item
-        while item.prev:
-            item = item.prev
+        item = self.__active_item.parent.child
 
         while True:
             if item.hotkey == hotkey:
+                if item.disabled:
+                    break
                 self.__active_item = item
                 self.action(self.ACTION_ENTER)
                 break
@@ -371,10 +371,9 @@ class MenuCore:
             rows_counter -= 1
 
         if self.show_previous_items:
-            while show_item.prev:
-                show_item = show_item.prev
+            show_item = show_item.parent.child
 
-        if show_item.prev and callable(self.render_scroll_up_fn):
+        elif show_item.prev and callable(self.render_scroll_up_fn):
             self.render_scroll_up_fn()
 
         while True:

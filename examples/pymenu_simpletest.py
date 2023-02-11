@@ -143,7 +143,7 @@ menu.add_items_set_hotkey(menu_i1, menu_i1_s1, menu_i1_s2, menu_i1_s3)
 menu_i2_s1 = MenuItem(label="Item 2 - dynamic", dynamic_fn=dynamic_menu)
 menu.add_items_set_hotkey(menu_i2, menu_i2_s1)
 
-menu_i3_s1 = MenuItem(label="Increase volume", hotkey="1", enter_fn=increase_volume)
+menu_i3_s1 = MenuItem(label="Increase volume", enter_fn=increase_volume)
 menu_i3_s2 = MenuItem(label="Decrease volume", enter_fn=decrease_volume)
 
 menu.add_items_set_hotkey(menu_i3, menu_i3_s1, menu_i3_s2)
