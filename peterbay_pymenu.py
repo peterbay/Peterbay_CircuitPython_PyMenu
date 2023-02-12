@@ -223,10 +223,20 @@ class MenuCore:
             parent.child = menu_item
 
     def add_items(self, parent, *args):
+        """Add multiple menu items to the menu
+
+        :param MenuItem parent_item: Parent menu item
+        :param MenuItem menu_item: Multiple menu items to add
+        """
         for item in args:
             self.add_item(parent, item)
 
     def add_items_set_hotkey(self, parent, *args):
+        """Add multiple menu items to the menu and set hotkey
+
+        :param MenuItem parent_item: Parent menu item
+        :param MenuItem menu_item: Multiple menu items to add
+        """
         hotkey = 1
         for item in args:
             item.hotkey = str(hotkey)

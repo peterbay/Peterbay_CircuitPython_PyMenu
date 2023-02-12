@@ -109,6 +109,7 @@ def dynamic_menu(menux, parent):
     menu_c = MenuItem(label="item c", enter_fn=print_message, data="Message for item c")
     menux.add_items_set_hotkey(parent, menu_a, menu_b, menu_c)
 
+
 def get_volume(item):
     return global_data["volume"]
 
